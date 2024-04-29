@@ -18,13 +18,6 @@ public class Program
         // Add services to the container.
         builder.Services.AddSingleton<ITextRepository, TextRepository>();
 
-        // Add services to the container.
-
-        /*        builder.Services.AddStackExchangeRedisCache(redisOptions =>
-                {
-                    redisOptions.Configuration = "localhost:6379";
-                });*/
-
         builder.Services.AddRazorPages();
 
         var app = builder.Build();

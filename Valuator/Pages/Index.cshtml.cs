@@ -32,14 +32,8 @@ public class IndexModel : PageModel
             Content = text
         };
 
-
-        /*        string textKey = "TEXT-" + id;*/
         //TODO: сохранить в БД text по ключу textKey    
-
-        /*        string rankKey = "RANK-" + id;*/
         //TODO: посчитать rank и сохранить в БД по ключу rankKey
-
-        /*        string similarityKey = "SIMILARITY-" + id;*/
         //TODO: посчитать similarity и сохранить в БД по ключу similarityKey
         textModel = _textRepository.Store(textModel);
 
