@@ -24,6 +24,10 @@ public class IndexModel : PageModel
     public IActionResult OnPost(string text)
     {
         _logger.LogDebug(text);
+        if (text == "" || text == null || string.IsNullOrEmpty(text))
+        {
+            return Redirect("/");
+        }
 
         Text textModel = new()
         {
@@ -35,6 +39,7 @@ public class IndexModel : PageModel
         //TODO: сохранить в БД text по ключу textKey    
         //TODO: посчитать rank и сохранить в БД по ключу rankKey
         //TODO: посчитать similarity и сохранить в БД по ключу similarityKey
+
         textModel = _textRepository.Store(textModel);
 
         return Redirect($"summary?id={textModel.Id}");
