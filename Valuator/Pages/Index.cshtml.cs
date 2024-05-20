@@ -24,6 +24,10 @@ public class IndexModel : PageModel
     public IActionResult OnPost(string text)
     {
         _logger.LogDebug(text);
+        if (text == "" || text == null || string.IsNullOrEmpty(text))
+        {
+            return Redirect("/");
+        }
 
         Text textModel = new()
         {
