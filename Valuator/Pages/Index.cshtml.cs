@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Valuator.Repository;
 using Valuator.Model;
+using Microsoft.AspNetCore.Connections;
+using System.Text;
+using NATS.Client;
 
 namespace Valuator.Pages;
 
@@ -40,6 +43,14 @@ public class IndexModel : PageModel
         //TODO: посчитать rank и сохранить в БД по ключу rankKey
         //TODO: посчитать similarity и сохранить в БД по ключу similarityKey
         textModel = _textRepository.Store(textModel);
+
+        Options options = ConnectionFactory.GetDefaultOptions();
+        options.Url = "127.0.0.1:4222";
+        IConnection _natsConnection = new ConnectionFactory().CreateConnection(options);
+
+        _natsConnection.Publish("RankCalculator", Encoding.UTF8.GetBytes(textModel.Id));
+
+        System.Threading.Thread.Sleep(1000);
 
         return Redirect($"summary?id={textModel.Id}");
     }
