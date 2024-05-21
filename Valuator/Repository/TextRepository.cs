@@ -1,5 +1,6 @@
 ﻿namespace Valuator.Repository;
 
+using System.Globalization;
 using System.Text.Json;
 using StackExchange.Redis;
 using Valuator.Model;
@@ -22,6 +23,11 @@ public class TextRepository : ITextRepository
     public Text Store(Text text)
     {
         text.Id ??= Guid.NewGuid().ToString();
+        if (text == Get(text.Id))
+        {
+            return text;
+        }
+
         StoreText(text);
         StoreRank(text);
         StoreSimilarity(text);
@@ -82,7 +88,9 @@ public class TextRepository : ITextRepository
 
     private double GetRank(string id)
     {
-        return (double)_database.StringGet($"{RANK_KEY}-{id}");
+        string value = _database.StringGet($"{RANK_KEY}-{id}");
+        double rank = double.Parse(value.Replace(',', '.'), CultureInfo.InvariantCulture);
+        return rank;
     }
 
     private int GetSimilarity(string id)
